@@ -7,10 +7,9 @@ import Card from '../../Components/UI/Card/Card';
 import Input from '../../Components/UI/Input/Input';
 import Button from '../../Components/UI/Button/Button';
 import LoadingAnimation from '../../Components/UI/LoadingAnimation/LoadingAnimation';
-import TopNav from '../../Components/UI/TopNav/TopNav';
+import {saveLoginTokens} from '../../Utils/AuthHandler'
 
-
-const Auth = props => {
+const Login = props => {
 
     const [controlsState, setControlsState] = useState({controls: {}});
     const [authSuccessState, setAuthSuccessState] = useState(false);
@@ -18,12 +17,9 @@ const Auth = props => {
     const resetLoadingTimer = useRef(null);
 
     useEffect( () => {
-
-        console.log("Entered useEffect()");
         let form = controlsState.controls;
         addFormElement(form, "email", 'input', 'text', 'EmailPlaceholder');
         addFormElement(form, "password", 'input', 'password', 'Password');
-        console.log("Entered useEffect in Auth.js");
         setControlsState( prevState => ({ controls: form}));
 
     }, []);
@@ -47,9 +43,10 @@ const Auth = props => {
 
     const onAuthSuccess = (response, authData) => {
 
-        storeTokens(response, authData);
+        saveLoginTokens(response, authData);
         setLoadingState(false);
         setAuthSuccessState(true);
+        localStorage.setItem("test", "hi there!");
 
     }
 
@@ -58,23 +55,7 @@ const Auth = props => {
 
     }
 
-    const getExpirationDate = (expiresIn) => {
-        expiresIn = expiresIn * 1;
-        if(expiresIn === 0){
-            expiresIn = 1_000_000;
-        }
-        const expiresInSeconds = expiresIn * 1000;
-        const now = new Date().getTime();
-        return new Date( now + expiresInSeconds);
-    };
 
-
-
-    const storeTokens = ( response, authData ) => {
-        localStorage.setItem('jwtToken', response.headers.authorization);
-        localStorage.setItem('expirationDate', getExpirationDate(response.headers.expires));
-        localStorage.setItem('userId', authData.username);
-    }
 
 
     const submitHandler = (event) => {
@@ -85,15 +66,14 @@ const Auth = props => {
             username: controlsState.controls.email.value,
             password: controlsState.controls.password.value
         };
-        console.log("About to set loading state to true!");
+        
         setLoadingState(true);
-        console.log("Loading state after set = " + isLoadingState);
+
         axios.post('/login', authData)
         .then( response => {
             onAuthSuccess(response, authData);
         })
         .catch( err => { 
-            console.log("ERROR sending login request:");
             console.log(err);});
             onAuthFail();
             resetLoadingStateAfterTimeout();
@@ -158,10 +138,7 @@ const Auth = props => {
            
     return (
 
-        <div className="auth">
-            <TopNav/>
-            <br></br>
-            
+        <div className="auth">            
             <Card>
                 <h2> You are not authenticated!</h2>
                 <p>Please log in to continue.</p>
@@ -179,4 +156,4 @@ const Auth = props => {
     );
 };
 
-export default Auth;
+export default Login;

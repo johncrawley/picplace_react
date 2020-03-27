@@ -1,14 +1,15 @@
 import React from 'react';
 import styles from './TopNav.module.css'
+import NavItems from '../Nav/NavItems/NavItems';
+import { isAuthenticated }from '../../../Utils/AuthHandler';
 
 
 const TopNav = () => {
 
-
     return (
 
         <div className={styles.background}>
-            <span> Home Login</span>
+            <NavItems isAuthenticated={isAuthenticated()}/>
         </div>
     );
 

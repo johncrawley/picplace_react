@@ -1,37 +1,38 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from './axios';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import React from 'react';
 
-import Auth from './Containers/Auth/Auth';
+import './App.css';
+import { Route, Switch, withRouter } from 'react-router-dom';
+
+import Login from './Containers/Login/Login';
+import Logout from './Containers/Logout/Logout';
 import Welcome from './Containers/Welcome/Welcome';
 import Upload from './Containers/Upload/Upload';
-
-
+import Layout from './Containers/Layout/Layout';
+import Auth from './HOC/Auth';
 
 
 const App = props => {
 
-  /*
-  useEffect(() =>{
-    props.onTryAutoSignup();
-  }, []);
+  
 
-  */
+ let welcome = Auth(Welcome);
+ let upload = Auth(Upload);
+ //let welcome = Welcome;
 
   let routes = (
     <Switch>
-      <Route path="/" exact component={Welcome} />
-      <Route path="/upload" exact component={Upload} />
-      <Route path="/login" exact component={Auth} />
+      <Route path="/" exact component={welcome} />
+      <Route path="/upload" exact component={upload} />
+      <Route path="/login" exact component={Login} />
+      <Route path="/logout" exact component={Logout} />
     </Switch>
   );
 
-
   return (
     <div className = "App">
-      {routes}
+      <Layout>
+        {routes}
+      </Layout>
     </div>
   );
 };
