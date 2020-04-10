@@ -2,13 +2,18 @@
 
     width: 100%;
     padding: 10px;
+    display: block;
+    float: left;
 }
 
 .Label {
 
-    font-weight: bold;
+    font-weight: normal;
+    color: grey;
     display: block;
-    margin-bottom: 8px;
+  /*  display: flex;
+    align-items: flex-start; */
+    padding: 6px 10px;
 }
 
 
@@ -18,8 +23,7 @@
     background-color: white;
     font: inherit;
     padding: 6px 10px;
-    display: block;
-    width: 100%;
+  /*  width: 100%; */
     box-sizing: border-box;
 }
 

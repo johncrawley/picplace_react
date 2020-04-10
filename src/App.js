@@ -9,6 +9,7 @@ import Welcome from './Containers/Welcome/Welcome';
 import Upload from './Containers/Upload/Upload';
 import Layout from './Containers/Layout/Layout';
 import Auth from './HOC/Auth';
+import Signup from './Containers/Signup/Signup';
 
 
 const App = props => {
@@ -25,6 +26,7 @@ const App = props => {
       <Route path="/upload" exact component={upload} />
       <Route path="/login" exact component={Login} />
       <Route path="/logout" exact component={Logout} />
+      <Route path="/signup" exact component={Signup} />
     </Switch>
   );
 

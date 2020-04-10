@@ -22,7 +22,8 @@ export const getAuthInfo = () => {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_AUTH_KEY));
 }
 
-export const getAuthToken = () => {
+export const getAuthToken = () => { 
+    console.log("AuthHandler, entered getAuthToken() , isAuthenticat() : " + isAuthenticated());
     if( isAuthenticated()){
         const authInfo = getAuthInfo();
         return authInfo[AUTH_JWT_TOKEN];

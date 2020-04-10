@@ -51,6 +51,7 @@
     }
 
     const savePreviewImagesToState = (array, numberOfFiles) => {
+      console.log("Entered savePReviewImagesToState");
       if(array.length === numberOfFiles){
         setImgData( (prevState) => ({
           sources : array
@@ -59,19 +60,22 @@
     }
 
     const handleFileSelect = (evt) => {
+      console.log("Entered handleFileSelect()");
       var selectedFiles = Array.from(evt.target.files);
 
       let array = [];
       setUpdated(false);
       for(var i =0; i < selectedFiles.length; i++){
         
-        //let file = selectedFiles[i];
+        let file = selectedFiles[i];
         var reader = new FileReader();
-        //var url = reader.readAsDataURL(file);
+        var url = reader.readAsDataURL(file);
         const numberOfFiles = selectedFiles.length;
+        console.log("handleFileSelect() number of files: " + numberOfFiles);
         
         reader.onload = function(e){
           array.push(e.target.result);
+          console.log("reader.onload()");
           savePreviewImagesToState(array, numberOfFiles);
         }
       }
@@ -87,27 +91,18 @@
     }
 
 
-    let thumbnailsOfFilesToUpload = null;
-
     const previewStyle = {
       width: "250px",
       height: "250px"
     };
   
     const previews = imgData.sources.map( (previewSrc, i) => (<div key={"previewItem_" + i}><img key={"previewImg_" + i} alt="preview" src={previewSrc} style={previewStyle} ></img></div>));
-    if (areFilesSelected()){
-      
-      thumbnailsOfFilesToUpload = (
-        <div>
-          <h3> some files here! </h3>
-          {previews}
-        </div>);
-    }
+    
 
-    let uploadButton = null;
-    if( areFilesSelected() ){
-      uploadButton = <button onClick={uploadPhotosAsForm}> Upload </button> ;
-    }
+    let thumbnailsOfFilesToUpload =  areFilesSelected() ? <div><h3> some files here!</h3>{previews}</div> : null;
+  
+    let uploadButton = areFilesSelected() ? <button onClick={uploadPhotosAsForm}> Upload </button> : null;
+   
 
     const fileSelector = (
       <div>
