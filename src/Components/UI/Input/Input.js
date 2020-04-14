@@ -14,6 +14,7 @@ const input = (props) => {
     let  inputElement = <input className={inputStyles}
                                 onClick = {props.onClick}
                                  type = {inputType}
+                                 maxLength = {props.maxLength}
                                  placeholder ={props.placeholder}
                                  onChange={props.changed}
                                  value={props.value}/>;

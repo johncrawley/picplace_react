@@ -30,14 +30,14 @@
 .InputElement:focus {
 
     outline: none;
-    background-color: #ccc;
+    background-color: #eaeaea;
 }
 
 
 .Invalid {
 
     border: 1px solid red;
-    background-color: rgb(182, 116, 116)
+    /*background-color: rgb(182, 116, 116) */
 
 }   
  .ValidationError {
