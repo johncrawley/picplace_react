@@ -31,8 +31,9 @@ const Signup = () => {
     const [formControls, setFormControls] = useState({});
     const [existingTimeout, setExistingTimeout] = useState(null);
     const [inputErrors, setInputErrors] = useState({});
+    const [areFieldsValid, setAreFieldsValid] = useState(false);
+    const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
     
-
 
     useEffect(() => {
         setupInputs();
@@ -92,7 +93,8 @@ const Signup = () => {
             [controlName] : {
                 ...formControls[controlName],
                 value: updatedValue,
-                isValid: isValid
+                isValid: isValid,
+                isTouched: true
             }
         };
         setFormControls(prevState => (updatedControls));
@@ -105,6 +107,7 @@ const Signup = () => {
             let isCurrentRuleValid = rules[i](value, controlName);
             isValid = isCurrentRuleValid && isValid;
         }
+        setAreFieldsValid(isValid);
         return isValid;
     }
 
@@ -127,11 +130,13 @@ const Signup = () => {
 
 
     const handleUsernamePresentError = (status) => {
+        setIsUsernameAvailable(false);
         console.log("Username present error: " + status);
     }
 
 
     const handleUsernameAvailable = (statusCode) => {
+        setIsUsernameAvailable(true);
         console.log("Username is available! "  + statusCode);
     }
 
@@ -142,7 +147,8 @@ const Signup = () => {
             email: formControls.email.value,
             password: formControls.password.value
         };
-        axios.post('/signup', form).then(response => console.log(response.data));
+        console.log("SubmitUserAddRequest() form to send: " + JSON.stringify(form));
+       // axios.post('/signup', form).then(response => console.log(response.data));
     }
 
     
@@ -208,12 +214,20 @@ const Signup = () => {
         return arePasswordsEqual;
     }
 
+    
 
-    const isDataValid = () => {
+    const isOkToSendCreateRequest = () => {
+        console.log("isOkToSendCreateRequest() : " + areFieldsValid && isUsernameAvailable );
 
+        return areFieldsValid && isUsernameAvailable && isEveryFieldTouched();
     }
 
 
+    const isEveryFieldTouched = () => {
+        return Object.keys(formControls).map(key => formControls[key].isTouched).reduce((total, current) => total && current, true);
+    }
+
+    
     const setConfirmPasswordFieldTouched = () => {
         formControls[CONFIRM_PASSWORD].isTouched = true;
     }
@@ -299,13 +313,16 @@ const Signup = () => {
 
                     {errorMessages}
 
-
-                    <button onClick={submitUserAddRequest} disabled={!isDataValid}>send</button>
-                </Card>
+                    <Button  click={submitUserAddRequest} disabled={!isOkToSendCreateRequest()}>Create Account</Button>
+                   </Card>
             </div>
 
     );
 
 }
+/*
+ <button onClick={submitUserAddRequest} disabled={true}>send</button>
+                
+*/
 
 export default Signup;
