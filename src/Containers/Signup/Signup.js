@@ -148,7 +148,7 @@ const Signup = () => {
             password: formControls.password.value
         };
         console.log("SubmitUserAddRequest() form to send: " + JSON.stringify(form));
-       // axios.post('/signup', form).then(response => console.log(response.data));
+       axios.post('/signup', form).then(response => console.log(response.data));
     }
 
     
@@ -213,12 +213,9 @@ const Signup = () => {
         }
         return arePasswordsEqual;
     }
-
     
 
     const isOkToSendCreateRequest = () => {
-        console.log("isOkToSendCreateRequest() : " + areFieldsValid && isUsernameAvailable );
-
         return areFieldsValid && isUsernameAvailable && isEveryFieldTouched();
     }
 
@@ -227,7 +224,7 @@ const Signup = () => {
         return Object.keys(formControls).map(key => formControls[key].isTouched).reduce((total, current) => total && current, true);
     }
 
-    
+
     const setConfirmPasswordFieldTouched = () => {
         formControls[CONFIRM_PASSWORD].isTouched = true;
     }
@@ -320,9 +317,5 @@ const Signup = () => {
     );
 
 }
-/*
- <button onClick={submitUserAddRequest} disabled={true}>send</button>
-                
-*/
 
 export default Signup;

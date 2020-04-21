@@ -17,4 +17,19 @@ export const axiosAuth = axios.create( {
 
 
 
+
+export const axiosAuth2 = () => {
+
+    let authToken = getAuthToken();
+
+    return axios.create( {
+        baseURL: basePath,
+        headers : { 'Authorization' : authToken }
+    });
+
+} 
+
+
+
+
 export default instance;

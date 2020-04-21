@@ -23,7 +23,7 @@ export const getAuthInfo = () => {
 }
 
 export const getAuthToken = () => { 
-    console.log("AuthHandler, entered getAuthToken() , isAuthenticat() : " + isAuthenticated());
+    console.log("AuthHandler, entered getAuthToken() , isAuthenticated() : " + isAuthenticated());
     if( isAuthenticated()){
         const authInfo = getAuthInfo();
         return authInfo[AUTH_JWT_TOKEN];

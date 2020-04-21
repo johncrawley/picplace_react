@@ -14,6 +14,7 @@ const Login = props => {
     const [wasAuthenticationSuccessful, setAuthenticationSuccessful] = useState(false);
     const [isLoadingState, setLoadingState] = useState(false);
     const resetLoadingTimer = useRef(null);
+    
 
     useEffect( () => {
         console.log("Login.js useEffect()");
@@ -68,7 +69,7 @@ const Login = props => {
     }
 
 
-    let form =  buildForm(controls, setControls);
+    let form = buildForm(controls, setControls);
 
     let loadingAnimation = isLoadingState === true ? <LoadingAnimation/> : null;
 

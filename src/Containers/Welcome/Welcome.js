@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { axiosAuth } from '../../axios';
+import { axiosAuth, axiosAuth2 } from '../../axios';
+import { NONAME } from 'dns';
+import { forOfStatement } from '@babel/types';
 
 
 const Welcome = (props) => {
@@ -15,7 +17,8 @@ const Welcome = (props) => {
     const photosPerPage = 5;
 
     const retrievePageOfPhotoIDs = () => {
-        axiosAuth.get('/photoIdsPage'+ getPageParams(currentPage))
+        console.log("Welcome.js : About to retrieve page of photo IDs");
+        axiosAuth2().get('/photoIdsPage'+ getPageParams(currentPage))
         .then( response => {
             parsePhotoIdsFrom(response.data);
             setIsLastPage(response.data.last);
@@ -38,9 +41,38 @@ const Welcome = (props) => {
         setPhotoIds( existingIds => [...existingIds, ...newIds]);
     }
 
+
+    const [imgErrorIds, setImgErrorIds] = useState({});
+
     const handleError = (label, error) => {
         console.log("Error (" + label + ") :" + error);
     }
+
+    const getImgStyle = (id) => {
+        if (imgErrorIds[id] === true){
+            console.log("Bad image, id: " + id);
+            return { display : 'none' }
+        }
+
+    }
+
+
+    const setImgDisplayToNone = (id) => {
+        console.log("Image broken: " + id);
+        let errorIds = { ...imgErrorIds, id : true};
+        setImgErrorIds(prev => errorIds);
+//
+//style={getImgStyle("photoImg_"+ photoId)}
+//onError={setImgDisplayToNone("photoImg_"+ photoId)}
+    }
+
+    const foo = (el) => {
+        el.style={display: 'none'};
+    }
+    const printStuff = (e,i) =>{
+        console.log("error: " + JSON.stringify(e) + " i: " + i);
+    }
+
 
     
     let photos = <h3> No Photos Found </h3>;
@@ -51,7 +83,15 @@ const Welcome = (props) => {
 
 
     if(photoIds.length > 0){
-       photos =  photoIds.map( photoId => <img key={photoId} src={"http://localhost:8090/svc/photo?size=thumbnail&id=" + photoId} alt={"id " + photoId}></img> );
+       photos =  photoIds.map( photoId => 
+        <object key={photoId} 
+                id={"photoImg_" + photoId} 
+                data={"http://localhost:8090/svc/photo?size=thumbnail&id=" + photoId} 
+                type="image/jpg"
+                alt={"id " + photoId}>
+
+
+                </object> );
     }
     
     return(
