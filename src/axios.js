@@ -9,7 +9,7 @@ const instance = axios.create( {
 
 
 
-export const axiosAuth = axios.create( {
+export const axiosAuthOLD = axios.create( {
     baseURL: basePath,
     headers : { 'Authorization' : getAuthToken() }
 });
@@ -18,7 +18,7 @@ export const axiosAuth = axios.create( {
 
 
 
-export const axiosAuth2 = () => {
+export const axiosAuth = () => {
 
     let authToken = getAuthToken();
 

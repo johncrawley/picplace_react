@@ -43,7 +43,7 @@
       let formData = new FormData();
       formData.append("file", file);
 
-      axiosAuth.post(
+      axiosAuth().post(
         "/uploadFile", 
         formData, 
         config

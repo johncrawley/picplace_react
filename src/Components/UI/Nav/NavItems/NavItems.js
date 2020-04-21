@@ -21,6 +21,7 @@ const authenticatedLinks = (
 const anonLinks = (
      <Fragment> 
         <NavItem link="/login">Login</NavItem>
+        <NavItem link="/signup">Signup</NavItem>
     </Fragment> 
 ); 
 

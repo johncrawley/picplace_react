@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { axiosAuth, axiosAuth2 } from '../../axios';
-import { NONAME } from 'dns';
-import { forOfStatement } from '@babel/types';
+import { axiosAuth } from '../../axios';
 
 
 const Welcome = (props) => {
@@ -18,7 +16,7 @@ const Welcome = (props) => {
 
     const retrievePageOfPhotoIDs = () => {
         console.log("Welcome.js : About to retrieve page of photo IDs");
-        axiosAuth2().get('/photoIdsPage'+ getPageParams(currentPage))
+        axiosAuth().get('/photoIdsPage'+ getPageParams(currentPage))
         .then( response => {
             parsePhotoIdsFrom(response.data);
             setIsLastPage(response.data.last);

@@ -6,7 +6,7 @@ import Card from '../../Components/UI/Card/Card';
 import Button from '../../Components/UI/Button/Button';
 
 
-const EMAIL_PATTERN = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+const EMAIL_PATTERN = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
 const USERNAME = "username";
 const EMAIL = "email";
@@ -215,7 +215,7 @@ const Signup = () => {
     }
     
 
-    const isOkToSendCreateRequest = () => {
+    const isReadyToSendRequest = () => {
         return areFieldsValid && isUsernameAvailable && isEveryFieldTouched();
     }
 
@@ -310,7 +310,7 @@ const Signup = () => {
 
                     {errorMessages}
 
-                    <Button  click={submitUserAddRequest} disabled={!isOkToSendCreateRequest()}>Create Account</Button>
+                    <Button  click={submitUserAddRequest} disabled={!isReadyToSendRequest()}>Create Account</Button>
                    </Card>
             </div>
 
