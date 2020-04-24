@@ -33,6 +33,8 @@ const Signup = () => {
     const [inputErrors, setInputErrors] = useState({});
     const [areFieldsValid, setAreFieldsValid] = useState(false);
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
+    const [isWaitingForResponse, setWaitingForResponse] = useState(false);
+    const [wasUserCreated, setWasUserCreated] = useState(false);
     
 
     useEffect(() => {
@@ -148,11 +150,13 @@ const Signup = () => {
             password: formControls.password.value
         };
         console.log("SubmitUserAddRequest() form to send: " + JSON.stringify(form));
+        setWaitingForResponse(true);
        axios.post('/signup', form).then(response => handleUserCreatedResponse(response));
     }
 
     const handleUserCreatedResponse = (response) => {
-
+        setWaitingForResponse(false);
+        setWasUserCreated(true);
 
 
     }
@@ -261,8 +265,14 @@ const Signup = () => {
         return isEmailValid;
     }
 
+    let loadingMessage = isWaitingForResponse ?  <h3>...Creating User</h3> : null;
 
-    let form = <Fragment>
+    let userCreated = wasUserCreated ? <h3> Your user account has been registered! Click here to upload some pictures.</h3> : null;
+
+    const wasRequestProcessed = isWaitingForResponse || wasUserCreated;
+
+
+    let form = wasRequestProcessed ? null : <Fragment>
                     <h2>Create an Account</h2>
 
                     <Input  
@@ -313,6 +323,8 @@ const Signup = () => {
             <div>
                 <Card>
                     {form}
+                    {loadingMessage}
+                    {userCreated}
                     </Card>
             </div>
 
