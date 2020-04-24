@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import axios from '../../axios';
 import Input from '../../Components/UI/Input/Input';
@@ -148,9 +148,14 @@ const Signup = () => {
             password: formControls.password.value
         };
         console.log("SubmitUserAddRequest() form to send: " + JSON.stringify(form));
-       axios.post('/signup', form).then(response => console.log(response.data));
+       axios.post('/signup', form).then(response => handleUserCreatedResponse(response));
     }
 
+    const handleUserCreatedResponse = (response) => {
+
+
+
+    }
     
     const displayInputErrorIfNot = (condition, errorKey) => {
 
@@ -256,62 +261,59 @@ const Signup = () => {
         return isEmailValid;
     }
 
-    return (
-            <div>
-                <Card>
+
+    let form = <Fragment>
                     <h2>Create an Account</h2>
 
                     <Input  
                         label="User Name"
-                        placeholder='Put'
                         maxLength="16"
                         valid={isValid(USERNAME)}
                         changed={(event) => inputChangedHandler(event, {
                                                 controlName: USERNAME,
                                                 validationRules: [ isUsernameAlphaNumeric, isUsernameMinLength ],
                                                 miscFunctions : [ queryServerForValidUsername ]
-                                            }
-                        )}/> 
+                                            })}/> 
                     <Input  
                             label="Email"
-                            placeholder='Put'
                             maxLength = "42"
                             valid={isValid(EMAIL)}
                             changed={(event) => inputChangedHandler(event, {
                                                     controlName: EMAIL,
                                                     validationRules: [ isEmailFormatCorrect ]
-                                                }
-                            )}/> 
+                                                })}/> 
                     <Input 
                         label="Password"
                         type="password"
-                        placeholder='Put'
                         maxLength = "22"
                         valid={isValid(PASSWORD)}
                         changed={(event) => inputChangedHandler(event, {
                                                 controlName: PASSWORD,
                                                 validationRules: [ isPasswordMinLength, isPasswordAlphaNumeric],
                                                 miscFunctions: [ arePasswordsTheSame ]
-                                                })
-                        } /> 
+                                                })} /> 
                     <Input 
                         label="Confirm Password"
                         type="password"
-                        placeholder='Put'
                         maxLength = "22"
                         onClick={setConfirmPasswordFieldTouched}
                         valid={isValid(CONFIRM_PASSWORD)}
                         changed={(event) => inputChangedHandler(event, {
                                                 controlName: CONFIRM_PASSWORD,
                                                 validationRules: [ arePasswordsTheSame ]
-                                                })
-                        }
-                         /> 
-
+                                                })}/> 
                     {errorMessages}
+                    <Button  click={submitUserAddRequest} 
+                                disabled={!isReadyToSendRequest()}>Create Account</Button>
+                 </Fragment>;
 
-                    <Button  click={submitUserAddRequest} disabled={!isReadyToSendRequest()}>Create Account</Button>
-                   </Card>
+
+
+    return (
+            <div>
+                <Card>
+                    {form}
+                    </Card>
             </div>
 
     );
