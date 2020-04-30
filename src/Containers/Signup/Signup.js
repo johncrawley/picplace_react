@@ -5,6 +5,7 @@ import Input from '../../Components/UI/Input/Input';
 import Card from '../../Components/UI/Card/Card';
 import Button from '../../Components/UI/Button/Button';
 
+import { postLoginRequest } from '../../Utils/AuthHandler';
 
 const EMAIL_PATTERN = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
@@ -35,6 +36,7 @@ const Signup = () => {
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
     const [isWaitingForResponse, setWaitingForResponse] = useState(false);
     const [wasUserCreated, setWasUserCreated] = useState(false);
+    const [hasLoginFailed, setLoginFailed] = useState(false);
     
 
     useEffect(() => {
@@ -156,9 +158,19 @@ const Signup = () => {
 
     const handleUserCreatedResponse = (response) => {
         setWaitingForResponse(false);
+        const authData = {
+            username: formControls[USERNAME].value,
+            password: formControls[PASSWORD].value
+        }
+        postLoginRequest(authData, onLoginSuccess, onLoginFail);
+    }
+
+    const onLoginFail = () => {
+        setLoginFailed(true);
+    }
+
+    const onLoginSuccess = () => {
         setWasUserCreated(true);
-
-
     }
     
     const displayInputErrorIfNot = (condition, errorKey) => {
@@ -267,7 +279,15 @@ const Signup = () => {
 
     let loadingMessage = isWaitingForResponse ?  <h3>...Creating User</h3> : null;
 
-    let userCreated = wasUserCreated ? <h3> Your user account has been registered! Click here to upload some pictures.</h3> : null;
+    let userCreated = null;
+    
+    if(wasUserCreated){
+        let message = hasLoginFailed ? "Your account was created but there is an error with the server and you cannot currently sign in. Please try again later":
+            "Your user account has been registered! Click here to upload some pictures.";
+        userCreated = <h3>{message}</h3>
+    }
+
+
 
     const wasRequestProcessed = isWaitingForResponse || wasUserCreated;
 

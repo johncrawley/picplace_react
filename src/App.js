@@ -10,6 +10,7 @@ import Upload from './Containers/Upload/Upload';
 import Layout from './Containers/Layout/Layout';
 import Auth from './HOC/Auth';
 import Signup from './Containers/Signup/Signup';
+import Unregister from './Containers/Unregister/Unregister';
 
 
 const App = props => {
@@ -27,6 +28,7 @@ const App = props => {
       <Route path="/login" exact component={Login} />
       <Route path="/logout" exact component={Logout} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="/unregister" exact component={Unregister} />
     </Switch>
   );
 

@@ -8,16 +8,6 @@ const instance = axios.create( {
 });
 
 
-
-export const axiosAuthOLD = axios.create( {
-    baseURL: basePath,
-    headers : { 'Authorization' : getAuthToken() }
-});
-
-
-
-
-
 export const axiosAuth = () => {
 
     let authToken = getAuthToken();

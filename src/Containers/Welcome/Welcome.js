@@ -62,13 +62,23 @@ const Welcome = (props) => {
                 alt={"id " + photoId}>
             </object> );
     }
+    const deleteUser = () => {
+        
+        axiosAuth().delete('/user?username=joc9')
+        .then(response => console.log("response for user deletion: " +response.data))
+        .catch(error => console.log("Error for user deltion: " + error));
+    }
+
+    let deleteUserButton = <button onClick={deleteUser}>Delete user!</button>
 
     
     return(
     <div>
-        <h1>welcome!</h1>
+        <h1>welcome!!</h1>
         {photos}
         {loadMoreButton}
+
+        {deleteUserButton}
 
     </div>
 

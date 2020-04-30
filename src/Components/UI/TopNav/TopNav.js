@@ -6,6 +6,7 @@ import { isAuthenticated }from '../../../Utils/AuthHandler';
 
 const TopNav = () => {
 
+    console.log("Loading TopNav");
     return (
 
         <div className={styles.background}>

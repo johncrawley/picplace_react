@@ -1,5 +1,25 @@
 
 import { LOCAL_STORAGE_AUTH_KEY, AUTH_USER_ID, AUTH_JWT_TOKEN, AUTH_EXPIRATION_DATE } from '../consts';
+import  axios from '../axios';
+
+
+
+
+
+export const postLoginRequest = (authData, onSuccess, onFail) => {
+        axios.post('/login', authData)
+        .then( response => {
+            saveLoginTokens(response, authData);
+            onSuccess(response, authData);
+        })
+        .catch( err => { 
+            console.log(err);
+            onFail();
+        });
+    }
+
+
+
 
 
 export const saveLoginTokens = (response, authData) => {
@@ -52,12 +72,12 @@ export const isAuthenticated = () => {
     if( doesTokenExist(authInfo) && isTokenFresh(authInfo)){
         return true;
     }
-    deleteExistingToken();
+    logout();
     return false;
 }
 
 
-export const deleteExistingToken = () => {
+export const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
 }
 

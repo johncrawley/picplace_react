@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from '../../axios';
 import  { Redirect } from 'react-router-dom';
 
 import Card from '../../Components/UI/Card/Card';
 import Button from '../../Components/UI/Button/Button';
 import LoadingAnimation from '../../Components/UI/LoadingAnimation/LoadingAnimation';
-import { saveLoginTokens } from '../../Utils/AuthHandler'
 import { addFormElement, buildForm} from '../../Utils/FormBuilder';
+import { postLoginRequest } from '../../Utils/AuthHandler';
 
 const Login = props => {
 
@@ -27,12 +26,14 @@ const Login = props => {
 
 
     const onAuthSuccess = (response, authData) => {
-        saveLoginTokens(response, authData);
         setLoadingState(false);
         setAuthenticationSuccessful(true);
+        resetLoadingStateAfterTimeout();
     }
 
     const onAuthFail = () => {
+
+        resetLoadingStateAfterTimeout();
     }
 
 
@@ -44,20 +45,7 @@ const Login = props => {
             password: controls.password.value
         };
         setLoadingState(true);
-        postLoginRequest(authData);
-    }
-
-
-    const postLoginRequest = (authData) => {
-        axios.post('/login', authData)
-        .then( response => {
-            onAuthSuccess(response, authData);
-        })
-        .catch( err => { 
-            console.log(err);
-            onAuthFail();
-        });
-        resetLoadingStateAfterTimeout();
+        postLoginRequest(authData, onAuthSuccess, onAuthFail);
     }
 
 
